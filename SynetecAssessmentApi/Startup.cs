@@ -6,6 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SynetecAssessmentApi.Persistence;
+using SynetecAssessmentApi.Repositories;
+using SynetecAssessmentApi.Services;
+using System.Reflection;
 
 namespace SynetecAssessmentApi
 {
@@ -29,6 +32,12 @@ namespace SynetecAssessmentApi
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseInMemoryDatabase(databaseName: "HrDb"));
+
+            services.AddAutoMapper(typeof(Startup).Assembly);
+
+            services.AddTransient<IBonusPoolService, BonusPoolService>();
+            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+            services.AddTransient<IBonusPoolCalculator, BonusPoolCalculator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
